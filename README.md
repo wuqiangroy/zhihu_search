@@ -8,4 +8,4 @@ django
 
 ## describe
 
-it's a api receive a keywords, and return the highest stars answer highly about the kwywords.
+it's a api receive a keywords, and return the highest stars answer highly about the keywords.
