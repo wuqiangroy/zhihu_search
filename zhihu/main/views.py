@@ -3,7 +3,7 @@ import requests
 from threading import Thread
 from django.http import HttpResponse
 from rest_framework.views import APIView
-from .util import deal_zhihu_content, get_search_url, deal_movie_content, deal_movie_download
+from .util import deal_zhihu_content, get_search_url, deal_movie_content, deal_movie_download, deal_torrent_content
 
 from zhihu.config import Config
 
@@ -45,4 +45,18 @@ class SearchMovie(APIView):
             thread.start()
         for thread in thread_list:
             thread.join()
+        return HttpResponse(json.dumps(result))
+
+
+class SearchTorrent(APIView):
+    """
+    search torrent
+    """
+
+    def get(self, request, *args, **kwargs):
+        data = request.query_params.get("keywords")
+        if not data:
+            return HttpResponse(json.dumps({"error": "no params"}))
+        res = requests.get(url=Config.torrent_search_url.format(data))
+        result = deal_torrent_content(res.content)
         return HttpResponse(json.dumps(result))

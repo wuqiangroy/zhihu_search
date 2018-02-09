@@ -118,3 +118,43 @@ def deal_movie_download(content):
     return res
 
 
+def deal_torrent_content(content):
+    """
+    :param content:
+    :return:
+    """
+
+    res = []
+    soup = BeautifulSoup(content, "html.parser")
+    name, size, numbers, magnet, torrent = None, None, None, None, None
+    for link in soup.find_all(attrs={"class": "mlist"}):
+        for item in link.find_all("li"):
+            for i in item.find_all(attrs={"class": "T1"}):
+                name = i.text.strip(" ")
+            for i in item.find_all(attrs={"class": "BotInfo"}):
+                n = 0
+                for j in i.find_all("span"):
+                    if n == 0:
+                        size = j.text.strip(" ")
+                    elif n == 1:
+                        numbers = j.text.replace(" ", "")
+                    else:
+                        break
+                    n += 1
+            for i in item.find_all(attrs={"class": "dInfo"}):
+                n = 0
+                for j in i.find_all("a"):
+                    if n == 0:
+                        magnet = j["href"].strip(" ")
+                    elif n == 1:
+                        torrent = j["href"].strip(" ")
+                    else:
+                        break
+                    n += 1
+            res.append({"name": name, "size": size, "numbers": numbers, "magnet": magnet, "torrent": torrent})
+    return res
+
+
+
+
+

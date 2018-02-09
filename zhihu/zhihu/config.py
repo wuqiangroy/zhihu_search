@@ -13,3 +13,5 @@ class Config:
     movie_search_url = "http://www.btbtdy.com/search/{}.html"
     movie_base_url = "http://www.btbtdy.com"
     movie_download_url = "http://www.btbtdy.com/vidlist/{}.html"
+
+    torrent_search_url = "http://cililianc.com/list/{}/1.html"
