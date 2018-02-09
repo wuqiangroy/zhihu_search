@@ -9,3 +9,7 @@ class Config:
                       "CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1",
         "Referer": "https://www.zhihu.com/search?type=content&q="
     }
+
+    movie_search_url = "http://www.btbtdy.com/search/{}.html"
+    movie_base_url = "http://www.btbtdy.com"
+    movie_download_url = "http://www.btbtdy.com/vidlist/{}.html"
