@@ -3,7 +3,8 @@ import requests
 from threading import Thread
 from django.http import HttpResponse
 from rest_framework.views import APIView
-from .util import deal_zhihu_content, get_search_url, deal_movie_content, deal_movie_download, deal_torrent_content
+from .util import (deal_zhihu_content, get_search_url, deal_movie_content, deal_movie_download, 
+    deal_torrent_content, deal_douban_content, deal_douban_detail)
 
 from zhihu.config import Config
 
@@ -60,3 +61,31 @@ class SearchTorrent(APIView):
         res = requests.get(url=Config.torrent_search_url.format(data))
         result = deal_torrent_content(res.content)
         return HttpResponse(json.dumps(result))
+
+
+class SearchDouban(APIView):
+    """
+    search content from douban
+    """
+
+    def get(self, request, *args, **kwargs):
+        data = request.query_params.get("keywords")
+        if not data:
+            return HttpResponse(json.dumps({"error": "no params"}))
+        res = requests.get(url=Config.douban_search_url.format(data))
+        url_list = deal_douban_content(res.content.decode())
+        result = []
+
+        def _get_detail(kind, url):
+            res = requests.get(url).content
+            data = deal_douban_detail(kind, res)
+            result.append(data)
+        _get_detail(url_list[0]["kind"], url_list[0]["url"])
+        # thread_list = []
+        # for i in url_list:
+        #     kind, url = i.get("kind"), i.get("url")
+        #     thread_list.append(Thread(target=_get_detail, args=(king, url)))
+        # _get_detail(url)
+
+        return HttpResponse(json.dumps({"hello": "world"}))
+        

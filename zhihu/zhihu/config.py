@@ -15,3 +15,5 @@ class Config:
     movie_download_url = "http://www.btbtdy.com/vidlist/{}.html"
 
     torrent_search_url = "http://cililianc.com/list/{}/1.html"
+
+    douban_search_url = "https://www.douban.com/search?q={}"

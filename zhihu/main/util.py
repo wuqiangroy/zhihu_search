@@ -155,6 +155,54 @@ def deal_torrent_content(content):
     return res
 
 
+def deal_douban_content(content):
+    """
+    :param content: douban search result
+    :return 
+    """
+    res = []
+    soup = BeautifulSoup(content, "html.parser")
+    for link in soup.find_all(attrs={"class": "result"}):
+        for item in link.find_all(attrs={"class": "title"}):
+            for i in item.find_all("h3"):
+                for j in i.find_all("span"):
+                    kind = j.text.replace(" ", "").strip("\n\r")[1:-1]
+                    break
+                for j in i.find_all("a"):
+                    url = j["href"]
+                if kind in ["小组", "小站"]:
+                    continue
+                res.append({"kind": kind, "url": url})
+    return res
 
+
+def deal_douban_detail(kind, content):
+    """
+    """
+
+    res = []
+
+    soup = BeautifulSoup(content, "html.parser")
+    if kind == "电影":
+        for link in soup.find_all(attrs={"id": "content"}):
+            for item in link.find_all("h1"):
+                for i in item.find_all(attrs={"property": "v:itemreviewed"}):
+                    title = i.text
+                for i in item.find_all(attrs={"class": "year"}):
+                    year = i.text[1:-1]
+            for item in link.find_all(attrs={"id": "mainpic"}):
+                for i in item.find_all("img"):
+                    pic = i["src"]
+                    break
+                break
+            for item in link.find_all(attrs={"id": "info"}):
+                for i in item.find_all("span"):
+                    pass
+            break
+        pass
+    elif kind == "游戏":
+        pass
+    elif kind == "书籍":
+        pass
 
 
